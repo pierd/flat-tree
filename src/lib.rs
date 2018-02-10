@@ -15,7 +15,6 @@
 //! - [mafintosh/merkle-tree-stream (JavaScript)](https://github.com/mafintosh/merkle-tree-stream)
 
 #![deny(missing_docs)]
-#![crate_type = "lib"]
 
 /// Returns the flat-tree of the tree node at the specified depth and offset.
 ///
