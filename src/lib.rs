@@ -1,21 +1,26 @@
-#![crate_type = "lib"]
-
 //! You can represent a binary tree in a simple flat list using the following
 //! structure:
 //!
 //!
-//! ```
-//! #       3
-//! #   1       5
-//! # 0   2   4   6  ...
+//! ```text
+//!       3
+//!   1       5
+//! 0   2   4   6  ...
 //! ```
 //!
 //! This module exposes a series of functions to help you build and maintain
 //! this data structure.
+//!
+//! ## See Also
+//! - [mafintosh/merkle-tree-stream (JavaScript)](https://github.com/mafintosh/merkle-tree-stream)
+
+#![deny(missing_docs)]
+#![crate_type = "lib"]
 
 /// Returns the flat-tree of the tree node at the specified depth and offset.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::index(0, 0), 0);
 /// assert_eq!(flat_tree::index(0, 1), 2);
 /// assert_eq!(flat_tree::index(0, 2), 4);
@@ -26,7 +31,8 @@ pub fn index(depth: u64, offset: u64) -> u64 {
 
 /// Returns the depth of a node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::depth(0), 0);
 /// assert_eq!(flat_tree::depth(1), 1);
 /// assert_eq!(flat_tree::depth(2), 0);
@@ -50,7 +56,8 @@ pub fn offset_with_depth(i: u64, depth: u64) -> u64 {
 
 /// Returns the offset of a node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::offset(0), 0);
 /// assert_eq!(flat_tree::offset(1), 0);
 /// assert_eq!(flat_tree::offset(2), 1);
@@ -68,7 +75,8 @@ pub fn parent_with_depth(i: u64, depth: u64) -> u64 {
 
 /// Returns the parent of a node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::index(1, 0), 1);
 /// assert_eq!(flat_tree::index(1, 1), 5);
 /// assert_eq!(flat_tree::index(2, 0), 3);
@@ -88,7 +96,8 @@ pub fn sibling_with_depth(i: u64, depth: u64) -> u64 {
 
 /// Returns the sibling of a node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::sibling(0), 2);
 /// assert_eq!(flat_tree::sibling(2), 0);
 /// assert_eq!(flat_tree::sibling(1), 5);
@@ -120,7 +129,8 @@ pub fn children_with_depth(i: u64, depth: u64) -> (u64, u64) {
 
 /// Returns both children of a node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::children(0), (0, 0));
 /// assert_eq!(flat_tree::children(1), (0, 2));
 /// assert_eq!(flat_tree::children(3), (1, 5));
@@ -139,7 +149,8 @@ pub fn left_child_with_depth(i: u64, depth: u64) -> u64 {
 
 /// Returns only the left child of a node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::left_child(0), 0);
 /// assert_eq!(flat_tree::left_child(1), 0);
 /// assert_eq!(flat_tree::left_child(3), 1);
@@ -158,7 +169,8 @@ pub fn right_child_with_depth(i: u64, depth: u64) -> u64 {
 
 /// Returns only the left child of a node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::right_child(0), 0);
 /// assert_eq!(flat_tree::right_child(1), 2);
 /// assert_eq!(flat_tree::right_child(3), 5);
@@ -177,7 +189,8 @@ pub fn right_span_with_depth(i: u64, depth: u64) -> u64 {
 
 /// Returns the right most node in the tree that the node spans.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::right_span(0), 0);
 /// assert_eq!(flat_tree::right_span(1), 2);
 /// assert_eq!(flat_tree::right_span(3), 6);
@@ -198,7 +211,8 @@ pub fn left_span_with_depth(i: u64, depth: u64) -> u64 {
 
 /// Returns the left most node in the tree that it spans.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::left_span(0), 0);
 /// assert_eq!(flat_tree::left_span(1), 0);
 /// assert_eq!(flat_tree::left_span(3), 0);
@@ -220,7 +234,8 @@ pub fn spans_with_depth(i: u64, depth: u64) -> (u64, u64) {
 
 /// Returns the left and right most nodes in the tree that the node spans.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::spans(0), (0, 0));
 /// assert_eq!(flat_tree::spans(1), (0, 2));
 /// assert_eq!(flat_tree::spans(3), (0, 6));
@@ -238,7 +253,8 @@ pub fn count_with_depth(_: u64, depth: u64) -> u64 {
 
 /// Returns how many nodes are in the tree that the node spans.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::count(0), 1);
 /// assert_eq!(flat_tree::count(1), 3);
 /// assert_eq!(flat_tree::count(3), 7);
@@ -252,7 +268,8 @@ pub fn count(i: u64) -> u64 {
 
 /// Returns all the previous fully rooted trees before the node.
 ///
-/// ```
+/// ## Examples
+/// ```rust
 /// assert_eq!(flat_tree::full_roots(0), []);
 /// assert_eq!(flat_tree::full_roots(2), [0]);
 /// assert_eq!(flat_tree::full_roots(8), [3]);
