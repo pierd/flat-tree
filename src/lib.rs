@@ -45,7 +45,7 @@ pub fn depth(i: usize) -> usize {
 }
 
 /// Returns the offset of a node with a depth.
-pub fn offset_with_depth(i: usize, depth: usize) -> usize {
+fn offset_with_depth(i: usize, depth: usize) -> usize {
   if is_even(i) {
     i / 2
   } else {
@@ -68,7 +68,7 @@ pub fn offset(i: usize) -> usize {
 }
 
 /// Returns the parent of a node with a depth.
-pub fn parent_with_depth(i: usize, depth: usize) -> usize {
+fn parent_with_depth(i: usize, depth: usize) -> usize {
   index(depth + 1, offset_with_depth(i, depth) >> 1)
 }
 
@@ -89,7 +89,7 @@ pub fn parent(i: usize) -> usize {
 }
 
 /// Returns the sibling of a node with a depth.
-pub fn sibling_with_depth(i: usize, depth: usize) -> usize {
+fn sibling_with_depth(i: usize, depth: usize) -> usize {
   index(depth, offset(i) ^ 1)
 }
 
@@ -107,17 +107,25 @@ pub fn sibling(i: usize) -> usize {
 }
 
 /// Returns the parent's sibling, of a node, with a depth.
-pub fn uncle_with_depth(i: usize, depth: usize) -> usize {
+fn uncle_with_depth(i: usize, depth: usize) -> usize {
   sibling_with_depth(parent_with_depth(i, depth), depth + 1)
 }
 
 /// Returns the parent's sibling, of a node.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::uncle(0), 5);
+/// assert_eq!(flat_tree::uncle(2), 5);
+/// assert_eq!(flat_tree::uncle(1), 11);
+/// assert_eq!(flat_tree::uncle(5), 11);
+/// ```
 pub fn uncle(i: usize) -> usize {
   uncle_with_depth(i, depth(i))
 }
 
 /// Returns both children of a node, with a depth.
-pub fn children_with_depth(i: usize, depth: usize) -> Option<(usize, usize)> {
+fn children_with_depth(i: usize, depth: usize) -> Option<(usize, usize)> {
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -143,7 +151,7 @@ pub fn children(i: usize) -> Option<(usize, usize)> {
 
 /// Returns only the left child of a node, with a depth
 // TODO: handle errors
-pub fn left_child_with_depth(i: usize, depth: usize) -> Option<usize> {
+fn left_child_with_depth(i: usize, depth: usize) -> Option<usize> {
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -166,7 +174,7 @@ pub fn left_child(i: usize) -> Option<usize> {
 }
 
 /// Returns only the left child of a node, with a depth.
-pub fn right_child_with_depth(i: usize, depth: usize) -> Option<usize> {
+fn right_child_with_depth(i: usize, depth: usize) -> Option<usize> {
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -190,7 +198,7 @@ pub fn right_child(i: usize) -> Option<usize> {
 }
 
 /// Returns the right most node in the tree that the node spans, with a depth.
-pub fn right_span_with_depth(i: usize, depth: usize) -> usize {
+fn right_span_with_depth(i: usize, depth: usize) -> usize {
   if depth == 0 {
     i
   } else {
@@ -213,7 +221,7 @@ pub fn right_span(i: usize) -> usize {
 }
 
 /// Returns the left most node in the tree that the node spans, with a depth.
-pub fn left_span_with_depth(i: usize, depth: usize) -> usize {
+fn left_span_with_depth(i: usize, depth: usize) -> usize {
   if depth == 0 {
     i
   } else {
@@ -237,7 +245,7 @@ pub fn left_span(i: usize) -> usize {
 
 /// Returns the left and right most nodes in the tree that the node spans, with
 /// a depth.
-pub fn spans_with_depth(i: usize, depth: usize) -> (usize, usize) {
+fn spans_with_depth(i: usize, depth: usize) -> (usize, usize) {
   (
     left_span_with_depth(i, depth),
     right_span_with_depth(i, depth),
@@ -259,7 +267,7 @@ pub fn spans(i: usize) -> (usize, usize) {
 }
 
 /// Returns how many nodes are in the tree that the node spans, with a depth.
-pub fn count_with_depth(_: usize, depth: usize) -> usize {
+fn count_with_depth(_: usize, depth: usize) -> usize {
   (2 << depth) - 1
 }
 
@@ -343,40 +351,47 @@ pub fn full_roots(i: usize, nodes: &mut Vec<usize>) {
 pub(crate) fn is_even(num: usize) -> bool {
   (num & 1) == 0
 }
-#[test]
-fn test_is_even() {
-  assert_eq!(is_even(0), true);
-  assert_eq!(is_even(1), false);
-  assert_eq!(is_even(2), true);
-  assert_eq!(is_even(3), false);
-}
 
 #[inline]
 pub(crate) fn is_odd(num: usize) -> bool {
   (num & 1) != 0
 }
-#[test]
-fn test_is_odd() {
-  assert_eq!(is_odd(0), false);
-  assert_eq!(is_odd(1), true);
-  assert_eq!(is_odd(2), false);
-  assert_eq!(is_odd(3), true);
-}
 
-#[test]
-fn test_parent_gt_int32() {
-  assert_eq!(parent(10_000_000_000), 10_000_000_001);
-}
+#[cfg(test)]
+mod tests {
+  use super::*;
 
-#[test]
-fn test_child_to_parent_to_child() {
-  let mut child = 0;
-  for _ in 0..50 {
-    child = parent(child)
+  #[test]
+  fn test_is_even() {
+    assert_eq!(is_even(0), true);
+    assert_eq!(is_even(1), false);
+    assert_eq!(is_even(2), true);
+    assert_eq!(is_even(3), false);
   }
-  assert_eq!(child, 1_125_899_906_842_623);
-  for _ in 0..50 {
-    child = left_child(child).expect("no valid number returned");
+
+  #[test]
+  fn test_is_odd() {
+    assert_eq!(is_odd(0), false);
+    assert_eq!(is_odd(1), true);
+    assert_eq!(is_odd(2), false);
+    assert_eq!(is_odd(3), true);
   }
-  assert_eq!(child, 0);
+
+  #[test]
+  fn test_parent_gt_int32() {
+    assert_eq!(parent(10_000_000_000), 10_000_000_001);
+  }
+
+  #[test]
+  fn test_child_to_parent_to_child() {
+    let mut child = 0;
+    for _ in 0..50 {
+      child = parent(child)
+    }
+    assert_eq!(child, 1_125_899_906_842_623);
+    for _ in 0..50 {
+      child = left_child(child).expect("no valid number returned");
+    }
+    assert_eq!(child, 0);
+  }
 }
