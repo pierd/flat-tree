@@ -279,7 +279,7 @@ pub fn count(i: usize) -> usize {
 }
 
 /// Returns a list of all the full roots (subtrees where all nodes have either 2 or 0 children) `<` index.
-/// For example `fullRoots(8)` returns `[3]` since the subtree rooted at `3` spans `0 -> 6`,
+/// For example `full_roots(8)` returns `[3]` since the subtree rooted at `3` spans `0 -> 6`,
 /// and the tree rooted at `7` has a child located at `9` which is `>= 8`.
 ///
 /// ## Panics
@@ -314,6 +314,30 @@ pub fn count(i: usize) -> usize {
 /// assert_eq!(nodes, [7]);
 /// ```
 pub fn full_roots(i: usize, nodes: &mut Vec<usize>) {
+  for x in iter_full_roots(i) {
+    nodes.push(x)
+  }
+}
+
+/// Returns an iterator over all the full roots (subtrees where all nodes have either 2 or 0 children) `<` index.
+/// For example `iter_full_roots(8)` emits `3` since the subtree rooted at `3` spans `0 -> 6`,
+/// and the tree rooted at `7` has a child located at `9` which is `>= 8`.
+///
+/// ## Panics
+/// If an uneven index is passed.
+///
+/// ## Examples
+/// ```rust
+/// use flat_tree::iter_full_roots;
+///
+/// assert_eq!(iter_full_roots(0).collect::<Vec<usize>>(), []);
+/// assert_eq!(iter_full_roots(2).collect::<Vec<usize>>(), vec![0]);
+/// assert_eq!(iter_full_roots(8).collect::<Vec<usize>>(), vec![3]);
+/// assert_eq!(iter_full_roots(20).collect::<Vec<usize>>(), vec![7, 17]);
+/// assert_eq!(iter_full_roots(18).collect::<Vec<usize>>(), vec![7, 16]);
+/// assert_eq!(iter_full_roots(16).collect::<Vec<usize>>(), vec![7]);
+/// ```
+pub fn iter_full_roots(i: usize) -> FullRootsIterator {
   assert!(
     is_even(i),
     format!(
@@ -321,21 +345,30 @@ pub fn full_roots(i: usize, nodes: &mut Vec<usize>) {
       i
     )
   );
-  let mut tmp = i >> 1;
-  let mut offset = 0;
-  let mut factor = 1;
+  FullRootsIterator { tmp: i >> 1, offset: 0 }
+}
 
-  loop {
-    if tmp == 0 {
-      break;
+pub struct FullRootsIterator {
+  tmp: usize,
+  offset: usize,
+}
+
+impl std::iter::Iterator for FullRootsIterator {
+  type Item = usize;
+
+  fn next(&mut self) -> Option<Self::Item> {
+    if self.tmp == 0 {
+      None
+    } else {
+      let mut factor = 1;
+      while factor * 2 <= self.tmp {
+        factor *= 2;
+      }
+      let result = self.offset + factor - 1;
+      self.offset += 2 * factor;
+      self.tmp -= factor;
+      Some(result)
     }
-    while factor * 2 <= tmp {
-      factor *= 2;
-    }
-    nodes.push(offset + factor - 1);
-    offset += 2 * factor;
-    tmp -= factor;
-    factor = 1;
   }
 }
 
