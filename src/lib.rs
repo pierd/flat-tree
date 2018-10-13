@@ -331,11 +331,11 @@ pub fn full_roots(i: usize, nodes: &mut Vec<usize>) {
 /// use flat_tree::iter_full_roots;
 ///
 /// assert_eq!(iter_full_roots(0).collect::<Vec<usize>>(), []);
-/// assert_eq!(iter_full_roots(2).collect::<Vec<usize>>(), vec![0]);
-/// assert_eq!(iter_full_roots(8).collect::<Vec<usize>>(), vec![3]);
-/// assert_eq!(iter_full_roots(20).collect::<Vec<usize>>(), vec![7, 17]);
-/// assert_eq!(iter_full_roots(18).collect::<Vec<usize>>(), vec![7, 16]);
-/// assert_eq!(iter_full_roots(16).collect::<Vec<usize>>(), vec![7]);
+/// assert_eq!(iter_full_roots(2).collect::<Vec<usize>>(), [0]);
+/// assert_eq!(iter_full_roots(8).collect::<Vec<usize>>(), [3]);
+/// assert_eq!(iter_full_roots(20).collect::<Vec<usize>>(), [7, 17]);
+/// assert_eq!(iter_full_roots(18).collect::<Vec<usize>>(), [7, 16]);
+/// assert_eq!(iter_full_roots(16).collect::<Vec<usize>>(), [7]);
 /// ```
 pub fn iter_full_roots(i: usize) -> FullRootsIterator {
   assert!(
