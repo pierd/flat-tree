@@ -314,9 +314,7 @@ pub fn count(i: usize) -> usize {
 /// assert_eq!(nodes, [7]);
 /// ```
 pub fn full_roots(i: usize, nodes: &mut Vec<usize>) {
-  for x in iter_full_roots(i) {
-    nodes.push(x)
-  }
+  nodes.extend(iter_full_roots(i))
 }
 
 /// Returns an iterator over all the full roots (subtrees where all nodes have either 2 or 0 children) `<` index.
