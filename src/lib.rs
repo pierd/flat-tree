@@ -45,7 +45,8 @@ pub fn depth(i: usize) -> usize {
 }
 
 /// Returns the offset of a node with a depth.
-fn offset_with_depth(i: usize, depth: usize) -> usize {
+pub fn offset_with_depth(i: usize, depth: usize) -> usize {
+  debug_assert_eq!(depth, self::depth(i));
   if is_even(i) {
     i / 2
   } else {
@@ -68,7 +69,8 @@ pub fn offset(i: usize) -> usize {
 }
 
 /// Returns the parent of a node with a depth.
-fn parent_with_depth(i: usize, depth: usize) -> usize {
+pub fn parent_with_depth(i: usize, depth: usize) -> usize {
+  debug_assert_eq!(depth, self::depth(i));
   index(depth + 1, offset_with_depth(i, depth) >> 1)
 }
 
@@ -89,7 +91,8 @@ pub fn parent(i: usize) -> usize {
 }
 
 /// Returns the sibling of a node with a depth.
-fn sibling_with_depth(i: usize, depth: usize) -> usize {
+pub fn sibling_with_depth(i: usize, depth: usize) -> usize {
+  debug_assert_eq!(depth, self::depth(i));
   index(depth, offset(i) ^ 1)
 }
 
@@ -107,7 +110,8 @@ pub fn sibling(i: usize) -> usize {
 }
 
 /// Returns the parent's sibling, of a node, with a depth.
-fn uncle_with_depth(i: usize, depth: usize) -> usize {
+pub fn uncle_with_depth(i: usize, depth: usize) -> usize {
+  debug_assert_eq!(depth, self::depth(i));
   sibling_with_depth(parent_with_depth(i, depth), depth + 1)
 }
 
@@ -125,7 +129,8 @@ pub fn uncle(i: usize) -> usize {
 }
 
 /// Returns both children of a node, with a depth.
-fn children_with_depth(i: usize, depth: usize) -> Option<(usize, usize)> {
+pub fn children_with_depth(i: usize, depth: usize) -> Option<(usize, usize)> {
+  debug_assert_eq!(depth, self::depth(i));
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -151,7 +156,8 @@ pub fn children(i: usize) -> Option<(usize, usize)> {
 
 /// Returns only the left child of a node, with a depth
 // TODO: handle errors
-fn left_child_with_depth(i: usize, depth: usize) -> Option<usize> {
+pub fn left_child_with_depth(i: usize, depth: usize) -> Option<usize> {
+  debug_assert_eq!(depth, self::depth(i));
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -174,7 +180,8 @@ pub fn left_child(i: usize) -> Option<usize> {
 }
 
 /// Returns only the left child of a node, with a depth.
-fn right_child_with_depth(i: usize, depth: usize) -> Option<usize> {
+pub fn right_child_with_depth(i: usize, depth: usize) -> Option<usize> {
+  debug_assert_eq!(depth, self::depth(i));
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -198,7 +205,8 @@ pub fn right_child(i: usize) -> Option<usize> {
 }
 
 /// Returns the right most node in the tree that the node spans, with a depth.
-fn right_span_with_depth(i: usize, depth: usize) -> usize {
+pub fn right_span_with_depth(i: usize, depth: usize) -> usize {
+  debug_assert_eq!(depth, self::depth(i));
   if depth == 0 {
     i
   } else {
@@ -221,7 +229,8 @@ pub fn right_span(i: usize) -> usize {
 }
 
 /// Returns the left most node in the tree that the node spans, with a depth.
-fn left_span_with_depth(i: usize, depth: usize) -> usize {
+pub fn left_span_with_depth(i: usize, depth: usize) -> usize {
+  debug_assert_eq!(depth, self::depth(i));
   if depth == 0 {
     i
   } else {
@@ -245,7 +254,8 @@ pub fn left_span(i: usize) -> usize {
 
 /// Returns the left and right most nodes in the tree that the node spans, with
 /// a depth.
-fn spans_with_depth(i: usize, depth: usize) -> (usize, usize) {
+pub fn spans_with_depth(i: usize, depth: usize) -> (usize, usize) {
+  debug_assert_eq!(depth, self::depth(i));
   (
     left_span_with_depth(i, depth),
     right_span_with_depth(i, depth),
@@ -267,7 +277,8 @@ pub fn spans(i: usize) -> (usize, usize) {
 }
 
 /// Returns how many nodes are in the tree that the node spans, with a depth.
-fn count_with_depth(_: usize, depth: usize) -> usize {
+pub fn count_with_depth(i: usize, depth: usize) -> usize {
+  debug_assert_eq!(depth, self::depth(i));
   (2 << depth) - 1
 }
 
