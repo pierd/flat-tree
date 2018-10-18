@@ -45,6 +45,15 @@ pub fn depth(i: usize) -> usize {
 }
 
 /// Returns the offset of a node with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::offset_with_depth(0, 0), 0);
+/// assert_eq!(flat_tree::offset_with_depth(1, 1), 0);
+/// assert_eq!(flat_tree::offset_with_depth(2, 0), 1);
+/// assert_eq!(flat_tree::offset_with_depth(3, 2), 0);
+/// assert_eq!(flat_tree::offset_with_depth(4, 0), 2);
+/// ```
 pub fn offset_with_depth(i: usize, depth: usize) -> usize {
   debug_assert_eq!(depth, self::depth(i));
   if is_even(i) {
@@ -69,6 +78,15 @@ pub fn offset(i: usize) -> usize {
 }
 
 /// Returns the parent of a node with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::parent_with_depth(0, 0), 1);
+/// assert_eq!(flat_tree::parent_with_depth(1, 1), 3);
+/// assert_eq!(flat_tree::parent_with_depth(2, 0), 1);
+/// assert_eq!(flat_tree::parent_with_depth(3, 2), 7);
+/// assert_eq!(flat_tree::parent_with_depth(4, 0), 5);
+/// ```
 pub fn parent_with_depth(i: usize, depth: usize) -> usize {
   debug_assert_eq!(depth, self::depth(i));
   index(depth + 1, offset_with_depth(i, depth) >> 1)
@@ -91,6 +109,15 @@ pub fn parent(i: usize) -> usize {
 }
 
 /// Returns the sibling of a node with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::sibling_with_depth(0, 0), 2);
+/// assert_eq!(flat_tree::sibling_with_depth(1, 1), 5);
+/// assert_eq!(flat_tree::sibling_with_depth(2, 0), 0);
+/// assert_eq!(flat_tree::sibling_with_depth(3, 2), 11);
+/// assert_eq!(flat_tree::sibling_with_depth(4, 0), 6);
+/// ```
 pub fn sibling_with_depth(i: usize, depth: usize) -> usize {
   debug_assert_eq!(depth, self::depth(i));
   index(depth, offset(i) ^ 1)
@@ -110,6 +137,14 @@ pub fn sibling(i: usize) -> usize {
 }
 
 /// Returns the parent's sibling, of a node, with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::uncle_with_depth(0, 0), 5);
+/// assert_eq!(flat_tree::uncle_with_depth(1, 1), 11);
+/// assert_eq!(flat_tree::uncle_with_depth(2, 0), 5);
+/// assert_eq!(flat_tree::uncle_with_depth(5, 1), 11);
+/// ```
 pub fn uncle_with_depth(i: usize, depth: usize) -> usize {
   debug_assert_eq!(depth, self::depth(i));
   sibling_with_depth(parent_with_depth(i, depth), depth + 1)
@@ -129,6 +164,14 @@ pub fn uncle(i: usize) -> usize {
 }
 
 /// Returns both children of a node, with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::children_with_depth(0, 0), None);
+/// assert_eq!(flat_tree::children_with_depth(1, 1), Some((0, 2)));
+/// assert_eq!(flat_tree::children_with_depth(3, 2), Some((1, 5)));
+/// assert_eq!(flat_tree::children_with_depth(9, 1), Some((8, 10)));
+/// ```
 pub fn children_with_depth(i: usize, depth: usize) -> Option<(usize, usize)> {
   debug_assert_eq!(depth, self::depth(i));
   if is_even(i) {
@@ -155,6 +198,13 @@ pub fn children(i: usize) -> Option<(usize, usize)> {
 }
 
 /// Returns only the left child of a node, with a depth
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::left_child_with_depth(0, 0), None);
+/// assert_eq!(flat_tree::left_child_with_depth(1, 1), Some(0));
+/// assert_eq!(flat_tree::left_child_with_depth(3, 2), Some(1));
+/// ```
 // TODO: handle errors
 pub fn left_child_with_depth(i: usize, depth: usize) -> Option<usize> {
   debug_assert_eq!(depth, self::depth(i));
@@ -180,6 +230,13 @@ pub fn left_child(i: usize) -> Option<usize> {
 }
 
 /// Returns only the left child of a node, with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::right_child_with_depth(0, 0), None);
+/// assert_eq!(flat_tree::right_child_with_depth(1, 1), Some(2));
+/// assert_eq!(flat_tree::right_child_with_depth(3, 2), Some(5));
+/// ```
 pub fn right_child_with_depth(i: usize, depth: usize) -> Option<usize> {
   debug_assert_eq!(depth, self::depth(i));
   if is_even(i) {
@@ -205,6 +262,15 @@ pub fn right_child(i: usize) -> Option<usize> {
 }
 
 /// Returns the right most node in the tree that the node spans, with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::right_span_with_depth(0, 0), 0);
+/// assert_eq!(flat_tree::right_span_with_depth(1, 1), 2);
+/// assert_eq!(flat_tree::right_span_with_depth(3, 2), 6);
+/// assert_eq!(flat_tree::right_span_with_depth(23, 3), 30);
+/// assert_eq!(flat_tree::right_span_with_depth(27, 2), 30);
+/// ```
 pub fn right_span_with_depth(i: usize, depth: usize) -> usize {
   debug_assert_eq!(depth, self::depth(i));
   if depth == 0 {
@@ -229,6 +295,15 @@ pub fn right_span(i: usize) -> usize {
 }
 
 /// Returns the left most node in the tree that the node spans, with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::left_span_with_depth(0, 0), 0);
+/// assert_eq!(flat_tree::left_span_with_depth(1, 1), 0);
+/// assert_eq!(flat_tree::left_span_with_depth(3, 2), 0);
+/// assert_eq!(flat_tree::left_span_with_depth(23, 3), 16);
+/// assert_eq!(flat_tree::left_span_with_depth(27, 2), 24);
+/// ```
 pub fn left_span_with_depth(i: usize, depth: usize) -> usize {
   debug_assert_eq!(depth, self::depth(i));
   if depth == 0 {
@@ -254,6 +329,15 @@ pub fn left_span(i: usize) -> usize {
 
 /// Returns the left and right most nodes in the tree that the node spans, with
 /// a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::spans_with_depth(0, 0), (0, 0));
+/// assert_eq!(flat_tree::spans_with_depth(1, 1), (0, 2));
+/// assert_eq!(flat_tree::spans_with_depth(3, 2), (0, 6));
+/// assert_eq!(flat_tree::spans_with_depth(23, 3), (16, 30));
+/// assert_eq!(flat_tree::spans_with_depth(27, 2), (24, 30));
+/// ```
 pub fn spans_with_depth(i: usize, depth: usize) -> (usize, usize) {
   debug_assert_eq!(depth, self::depth(i));
   (
@@ -277,6 +361,16 @@ pub fn spans(i: usize) -> (usize, usize) {
 }
 
 /// Returns how many nodes are in the tree that the node spans, with a depth.
+///
+/// ## Examples
+/// ```rust
+/// assert_eq!(flat_tree::count_with_depth(0, 0), 1);
+/// assert_eq!(flat_tree::count_with_depth(1, 1), 3);
+/// assert_eq!(flat_tree::count_with_depth(3, 2), 7);
+/// assert_eq!(flat_tree::count_with_depth(5, 1), 3);
+/// assert_eq!(flat_tree::count_with_depth(23, 3), 15);
+/// assert_eq!(flat_tree::count_with_depth(27, 2), 7);
+/// ```
 pub fn count_with_depth(i: usize, depth: usize) -> usize {
   debug_assert_eq!(depth, self::depth(i));
   (2 << depth) - 1
