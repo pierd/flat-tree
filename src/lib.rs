@@ -55,7 +55,7 @@ pub fn depth(i: usize) -> usize {
 /// assert_eq!(flat_tree::offset_with_depth(4, 0), 2);
 /// ```
 pub fn offset_with_depth(i: usize, depth: usize) -> usize {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   if is_even(i) {
     i / 2
   } else {
@@ -88,7 +88,7 @@ pub fn offset(i: usize) -> usize {
 /// assert_eq!(flat_tree::parent_with_depth(4, 0), 5);
 /// ```
 pub fn parent_with_depth(i: usize, depth: usize) -> usize {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   index(depth + 1, offset_with_depth(i, depth) >> 1)
 }
 
@@ -119,7 +119,7 @@ pub fn parent(i: usize) -> usize {
 /// assert_eq!(flat_tree::sibling_with_depth(4, 0), 6);
 /// ```
 pub fn sibling_with_depth(i: usize, depth: usize) -> usize {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   index(depth, offset(i) ^ 1)
 }
 
@@ -146,7 +146,7 @@ pub fn sibling(i: usize) -> usize {
 /// assert_eq!(flat_tree::uncle_with_depth(5, 1), 11);
 /// ```
 pub fn uncle_with_depth(i: usize, depth: usize) -> usize {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   sibling_with_depth(parent_with_depth(i, depth), depth + 1)
 }
 
@@ -173,7 +173,7 @@ pub fn uncle(i: usize) -> usize {
 /// assert_eq!(flat_tree::children_with_depth(9, 1), Some((8, 10)));
 /// ```
 pub fn children_with_depth(i: usize, depth: usize) -> Option<(usize, usize)> {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -207,7 +207,7 @@ pub fn children(i: usize) -> Option<(usize, usize)> {
 /// ```
 // TODO: handle errors
 pub fn left_child_with_depth(i: usize, depth: usize) -> Option<usize> {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -238,7 +238,7 @@ pub fn left_child(i: usize) -> Option<usize> {
 /// assert_eq!(flat_tree::right_child_with_depth(3, 2), Some(5));
 /// ```
 pub fn right_child_with_depth(i: usize, depth: usize) -> Option<usize> {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   if is_even(i) {
     None
   } else if depth == 0 {
@@ -272,7 +272,7 @@ pub fn right_child(i: usize) -> Option<usize> {
 /// assert_eq!(flat_tree::right_span_with_depth(27, 2), 30);
 /// ```
 pub fn right_span_with_depth(i: usize, depth: usize) -> usize {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   if depth == 0 {
     i
   } else {
@@ -305,7 +305,7 @@ pub fn right_span(i: usize) -> usize {
 /// assert_eq!(flat_tree::left_span_with_depth(27, 2), 24);
 /// ```
 pub fn left_span_with_depth(i: usize, depth: usize) -> usize {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   if depth == 0 {
     i
   } else {
@@ -339,7 +339,7 @@ pub fn left_span(i: usize) -> usize {
 /// assert_eq!(flat_tree::spans_with_depth(27, 2), (24, 30));
 /// ```
 pub fn spans_with_depth(i: usize, depth: usize) -> (usize, usize) {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   (
     left_span_with_depth(i, depth),
     right_span_with_depth(i, depth),
@@ -372,7 +372,7 @@ pub fn spans(i: usize) -> (usize, usize) {
 /// assert_eq!(flat_tree::count_with_depth(27, 2), 7);
 /// ```
 pub fn count_with_depth(i: usize, depth: usize) -> usize {
-  debug_assert_eq!(depth, self::depth(i), "Invalid depth!");
+  debug_assert_eq!(depth, self::depth(i), "Invalid depth.");
   (2 << depth) - 1
 }
 
